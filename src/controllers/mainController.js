@@ -44,17 +44,29 @@ const usersController = {
   register: (req, res) => {
     res.render("./index.ejs");
   },
+  generateId: function () {
+    let lastUser = users.pop();
+    if (lastUser) {
+      return lastUser.id+1;
+    }
+    return 1;
+    
+  },
+  findByField:(field, text)  => {
+    let userFound = users.find(userField => userField[field] === text)
+    return userFound
+},
   create: (req, res) => {
     const resultValidation = validationResult(req);
     console.log(req.body)
     if (resultValidation.errors.length > 0) {
-      return res.render("./users/register", {
+      return res.render("./index.ejs", {
         errors: resultValidation.mapped(),
         old: req.body,
       });
     }
 
-    let userByEmailInDB = User.findByField("email", req.body.email);
+    let userByEmailInDB = usersController.findByField("email", req.body.email);
     
 
     if (userByEmailInDB) {
@@ -69,16 +81,24 @@ const usersController = {
     }
     
     let userToCreate = {
-      ...req.body,
-      password: bcryptjs.hashSync(req.body.password, 10)
+      id: this.generateId(),
+      name: req.body.name,
+      lastname: req.body.lastname,
+      password: bcryptjs.hashSync(req.body.password, 10),
+      confirmPassword: req.body.confirmPassword,
+      email: req.body.email,
+     //patientCaregiver: req.body.patientCaregiver.value
+
     }
     delete userToCreate.confirmPassword
-    
- 
-    let userCreated = User.create(userToCreate);
-    return res.redirect("/users/userProfile");
+    JSON.parse(userToCreate)
+     users.push(userToCreate);
+     console.log(users)
+
+
+    return res.send('user created')
   },
-  enterLogin: (req, res) => {
+  /*enterLogin: (req, res) => {
     let userToLogin = User.findByField("email", req.body.email);
 
     if (userToLogin) {
@@ -110,7 +130,7 @@ const usersController = {
         },
       },
     });
-  },
+  },*/
 };
-
+console.log(users)
 module.exports = usersController;
