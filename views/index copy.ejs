@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Visual Bolt</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+                <section>
+                    <div>
+                        <form action="/" method="POST" enctype="multipart/form-data">
+                            <div class="box-register">
+                                <h1 class="register-title">Register</h1>
+                                <div class="container-name">
+                                    <label for="name"></label>
+                                    <input type="text" name="name" id="name" placeholder="Enter your Name" value="<%= locals.old && old.name %>" required>
+                                    < % if ( locals.errors && locals.errors.name ) { %>
+                                        <%= errors.name.msg %>  
+                                 
+                                       <% } %-->
+                                </div>
+                                <div class="container-lastname">
+                                    <label for="lastname"></label>
+                                    <input type="text" name="lastname" id="lastname" placeholder="Enter your Lastname" value="<%= locals.old && old.lastname %>" required>
+                                    <!-- % if ( locals.errors && locals.errors.lastname ) { %>
+                                        <%= errors.lastname.msg %>  
+                                 
+                                       <% } %-->
+                                </div>
+                               
+                                 <div class="container-password">
+                                            <label for="password"></label>
+                                            <input type="password" name="password" id="password" placeholder="Enter your password" required >
+                                            <!-- % if ( locals.errors && locals.errors.password ) { %>
+                                                <%= errors.password.msg %>  
+                                         
+                                               < % } %-->
+                                        </div>
+                                        <div class="container-confirmPassword">
+                                            <label for="confirmPassword"></label>
+                                            <input type="password" name="confirmPassword" id="confirmPassword" placeholder="Confirm your password" value="<%= locals.old && old.confirmPassword %>" required>
+                                            <!-- % if ( locals.errors && locals.errors.confirmPassword ) { %>
+                                                <%= errors.confirmPassword.msg %>  
+                                         
+                                               <% } %-->
+                                        </div>
+                                    <div class="container-email">
+                                        <label for="email"></label>
+                                        <input type="email" name="email" id="email" placeholder="Enter your Email" value=" <%= locals.old && old.email %>" required>
+                                        <!-- % if ( locals.errors && locals.errors.email ) { %>
+                                            <%= errors.email.msg %>  
+                                     
+                                           < % } %-->   
+                                    </div>
+                                   
+                                </div>
+                                <div class="container-button">
+                                    <button type="submit">
+                                        <span class="text">Register</span>
+                                    </button>
+                                </div>
+                                    </div>
+                                </div>
+    
+                            </form>
+                           
+                        </div>
+                   
+                    </article>
+                </section>
+  </body>
+</html>

@@ -1,36 +1,12 @@
 const { validationResult } = require("express-validator");
 const path = require("path");
 const bcryptjs = require("bcryptjs");
+const users = require('./dataUsers')
 //const User = require(path.resolve("./src/model/model.js"));
 
-const users = [
-  {
-    id: '1',
-    email: 'federicor@onetree.com',
-    firstName: 'federico',
-    lastName: 'rezzano',
-  },
-  {
-    id: '2',
-    email: 'emanuel.jofre@onetree.com',
-    firstName: 'emanuel',
-    lastName: 'jofre',
-  },
-  {
-    id: '3',
-    email: 'hermione.granger@onetree.com',
-    firstName: 'hermoine',
-    lastName: 'granger',
-  },
-  {
-    id: '4',
-    email: 'harryPotter@onetree.com',
-    firstName: 'harry',
-    lastName: 'potter',
-  },
-];
 
-const user = users.map( user => { return user})
+
+//const user = users.map( user => { return user})
 
 const patients = [];
 const patient = patients.map( patient => { return patient})
@@ -46,10 +22,10 @@ const usersController = {
   },
   generateId: function () {
     let lastUser = users.pop();
+    console.log(lastUser.id)
     if (lastUser) {
-      return lastUser.id+1;
+      return lastUser.id + 1;
     }
-    return 1;
     
   },
   findByField:(field, text)  => {
@@ -70,7 +46,7 @@ const usersController = {
     
 
     if (userByEmailInDB) {
-      return res.render("/index", {
+      return res.render("./index.ejs", {
         errors: {
           email: {
             msg: "This mail has been already register",
@@ -81,56 +57,24 @@ const usersController = {
     }
     
     let userToCreate = {
-      id: this.generateId(),
-      name: req.body.name,
-      lastname: req.body.lastname,
-      password: bcryptjs.hashSync(req.body.password, 10),
-      confirmPassword: req.body.confirmPassword,
+      id: usersController.generateId(),
       email: req.body.email,
-     //patientCaregiver: req.body.patientCaregiver.value
-
+      firstName: req.body.name,
+      lastName: req.body.lastname,
     }
     delete userToCreate.confirmPassword
-    JSON.parse(userToCreate)
-     users.push(userToCreate);
-     console.log(users)
+    console.log(userToCreate)
+    console.log(users)
+    
 
+  
+    usersController.createUser()
 
     return res.send('user created')
   },
-  /*enterLogin: (req, res) => {
-    let userToLogin = User.findByField("email", req.body.email);
-
-    if (userToLogin) {
-      let isPasswordOk = bcryptjs.compareSync(
-        req.body.password,
-        userToLogin.password
-      );
-      if (isPasswordOk) {
-        delete userToLogin.password;
-        req.session.userLogged = userToLogin;
-
-        if (req.body.remember_me) {
-          res.cookie("userEmail", req.body.email, { maxAge: 1000 * 60 * 2 });
-        }
-        return res.redirect("/users/userProfile");
-      }
-      return res.render("./users/login", {
-        errors: {
-          email: {
-            msg: "Las credenciales son inválidas",
-          },
-        },
-      });
-    }
-    return res.render("./users/login", {
-      errors: {
-        email: {
-          msg: "El Email ingresado no se encuentra registrado",
-        },
-      },
-    });
-  },*/
+  createUser: function ()  {
+    users.push(usersController.create.userToCreate);
+  }
 };
-console.log(users)
+
 module.exports = usersController;

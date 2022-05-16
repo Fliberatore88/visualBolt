@@ -1,9 +1,12 @@
-var express = require('express');
-var router = express.Router();
+const express = require ('express');
+const router = express.Router();
+const path = require('path')
+const usersValidation = require (path.resolve('./middlewares/usersValidation'))
+const mainController = require (path.resolve('./src/controllers/mainController'))
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
-});
+router.get('/', mainController.register );
+router.post('/',usersValidation, mainController.create );
+
 
 module.exports = router;
